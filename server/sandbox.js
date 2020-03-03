@@ -8,7 +8,7 @@ var links = [];
 var obj = {
   table : []
 };
-var jsonMich,jsonMaitr;
+var json;
 
 async function url_scrap(searchLink,callback)
 {
@@ -50,8 +50,8 @@ async function asyncForEach(array, callback) {
 }
 
 const writeJson = async (obj, title) =>{
-  jsonMaitr = JSON.stringify(obj);
-  fs.writeFile(title,jsonMaitr,(err => {
+  json = JSON.stringify(obj);
+  fs.writeFile(title,json,(err => {
     if(err) throw err;
     console.log("file saved");
   }));
@@ -60,36 +60,26 @@ const writeJson = async (obj, title) =>{
 var maitreUrls = [];
 
 const main = async() =>{
- /* await url_scrap('https://guide.michelin.com/fr/fr/restaurants/bib-gourmand/page/',michelin.scrapeUrl);
+  await url_scrap('https://guide.michelin.com/fr/fr/restaurants/bib-gourmand/page/',michelin.scrapeUrl);
   const start = async () => {
     await asyncForEach(links, async (item) =>{
       await sandbox('https://guide.michelin.com/' + item,michelin.scrapeRestaurant);
     });
-    console.log(obj);
-    jsonMich = JSON.stringify(obj);
-    fs.writeFile('michelin.json',jsonMich,(err => {
-      if(err) throw err;
-      console.log("file saved");
-    }));
+    await writeJson(obj,'michelin.json');
   };
-  start();
-*/
- /* await maitre.getAllUrls(maitreUrls,154);
+  await start();
+
+  //maitre.GetAllUrls prend beaucoup de temps a s'executer ~20min
+  await maitre.getAllUrls(maitreUrls,154);
   await asyncForEach(maitreUrls, async (item) =>{
     await sandbox(item,maitre.scrapeRestaurant);
   });
 
-  jsonMaitr = JSON.stringify(obj);
-  fs.writeFile('maitre.json',jsonMaitr,(err => {
-    if(err) throw err;
-    console.log("file saved");
-  })); */
+  await writeJson(obj,'maitre.json');
 
   const boi = await bib.get();
-  await writeJson(boi,'bib.json');
+  await writeJson(boi,'../bib-app/src/bib.json');
   console.log(boi);
 };
 
 main();
-
-
